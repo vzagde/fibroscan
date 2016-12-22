@@ -273,6 +273,7 @@ myApp.onPageInit('machine_booking', function(page) {
     $("#doctor-list").append(html);
 
     $("#doctor-list").change(function () {
+        myApp.showIndicator();
         var doctors_id = this.value;
         // console.log(doctors_id);
         if (!doctors_id == 0) {
@@ -307,7 +308,9 @@ myApp.onPageInit('machine_booking', function(page) {
                 myApp.alert('Some error occurred on connecting.');
                 // console.log('fail: ' + j2s(err));
             })
-            .always(function() {});
+            .always(function() {
+                myApp.hideIndicator();
+            });
         }
     });
 
@@ -333,6 +336,7 @@ myApp.onPageInit('machine_booking', function(page) {
 myApp.onPageInit('technician_view', function(page) {
     // console.log(token);
     myApp.allowPanelOpen = true;
+    myApp.showIndicator();
     $.ajax({
         url: base_url + '/technician_dashboard',
         type: 'POST',
@@ -465,7 +469,9 @@ myApp.onPageInit('technician_view', function(page) {
         myApp.alert('Some error occurred on connecting.');
         // console.log('fail: ' + j2s(err));
     })
-    .always(function() {});
+    .always(function() {
+        myApp.hideIndicator();
+    });
 });
 
 myApp.onPageInit('calendar', function(page) {
@@ -639,6 +645,7 @@ myApp.onPageInit('calendar', function(page) {
 
             /* Get current day on click in calendar and find day-event to display */
             function displayEvent() {
+                myApp.showIndicator();
                 $.ajax({
                     url: 'http://sdtaxultants.com/fibroscan/index.php/api/pull_calendar_data',
                     type: 'POST',
@@ -650,6 +657,7 @@ myApp.onPageInit('calendar', function(page) {
                     },
                 })
                 .done(function(data) {
+                    myApp.hideIndicator();
                     var events = data.data;
                     // console.log('done: ' + j2s(data));
                     // loop json & append to dom
@@ -783,6 +791,7 @@ myApp.onPageInit('calendar', function(page) {
                         // console.log(dayEvent);
                         // console.log(monthEvent);
                         // console.log(yearEvent);
+                        myApp.showIndicator();
                         $.ajax({
                             url: base_url + '/machine_listing',
                             type: 'POST',
@@ -818,7 +827,9 @@ myApp.onPageInit('calendar', function(page) {
                             myApp.alert('Some error occurred on connecting.');
                             // console.log('fail: ' + j2s(err));
                         })
-                        .always(function() {});
+                        .always(function() {
+                            myApp.hideIndicator();
+                        });
                     }
                 });
             };
@@ -831,6 +842,7 @@ myApp.onPageInit('camp_list', function(page) {
     myApp.allowPanelOpen = true;
     $('#camp_planned').empty();
     $('#camp_executed').empty();
+    myApp.showIndicator();
     $.ajax({
         url: base_url + '/camp_listing_details',
         type: 'POST',
@@ -857,7 +869,7 @@ myApp.onPageInit('camp_list', function(page) {
                           '<div class="item-title" style="min-width: 100% !important; white-space: normal;">'+
                             '<p style="margin: 1px"><b>'+name[0]+date_to_date_string2(value.date)+value.id+'</b></p>'+
                             '<p id="click_delete_'+value.id+'" style="margin: 0px !important; float: right">'+
-                                '<a onclick="delete_executed_camp('+value.id+')"><i class="fa fa-trash-o" style="color:red;"aria-hidden="true"></i><a/>'+
+                                '<a onclick="delete_executed_camp('+value.id+')"><i class="fa fa-trash-o" style="color:red;margin-top: 25px !important;font-size: 21px !important;" aria-hidden="true"></i><a/>'+
                             '</p>'+
                             '<p style="margin: 1px">'+tConvert(value.start_time)+'-'+tConvert(value.end_time)+'</p>'+
                             '<p style="margin: 1px">'+date_to_date_string2(value.date)+'</p>'+
@@ -893,7 +905,9 @@ myApp.onPageInit('camp_list', function(page) {
         myApp.alert('Some error occurred on connecting.');
         // console.log('fail: ' + j2s(err));
     })
-    .always(function() {});
+    .always(function() {
+        myApp.hideIndicator();
+    });
 });
 
 myApp.onPageInit('camp_list1', function(page) {
@@ -902,6 +916,7 @@ myApp.onPageInit('camp_list1', function(page) {
 
 myApp.onPageInit('camp_approved', function(page) {
     myApp.allowPanelOpen = true;
+    myApp.showIndicator();
     $.ajax({
         url: base_url + '/fam_approval_list',
         type: 'POST',
@@ -924,7 +939,7 @@ myApp.onPageInit('camp_approved', function(page) {
                             '<p style="margin: 20px 0px 0px 8px!important;">'+value.fam_name+','+value.machine_name+'</p>'+
                             '</div>'+
                             '<div class="col-20" id="approved_section_'+value.id+'">'+
-                              '<a onclick="camp_approved_click('+value.id+')"><img style="width: 40%;margin-top: 22px;float: right; padding-right: 9%;" src="img/tick_mark.png" alt=""></a>'+
+                              '<a onclick="camp_approved_click('+value.id+')"><img style="width: 46%;margin-top: 22px;float: right; padding-right: 9%;" src="img/tick_mark.png" alt=""></a>'+
                             '</div>'+
                         '</div>'+
                         '<div class="col-100">'+
@@ -935,7 +950,7 @@ myApp.onPageInit('camp_approved', function(page) {
                               '<p style="margin:0px 0px 0px 8px!important;">'+value.doctor_name+'</p>'+
                             '</div>'+
                             '<div class="col-20" id="delete_section_'+value.id+'">'+
-                              '<a onclick="camp_delete_click('+value.id+')" ><i class="fa fa-trash-o" style="color:red;float: right; padding-right:21%;" aria-hidden="true" data-id="'+value.id+'"></i></a>'+
+                              '<a onclick="camp_delete_click('+value.id+')" ><i class="fa fa-trash-o" style="color:red;float: right; padding-right:21%;font-size:22px;" aria-hidden="true" data-id="'+value.id+'"></i></a>'+
                             '</div>'+
                         '</div>'+
                         '<div class="col-100">'+
@@ -953,7 +968,9 @@ myApp.onPageInit('camp_approved', function(page) {
         myApp.alert('Some error occurred on connecting.');
         // console.log('fail: ' + j2s(err));
     })
-    .always(function() {});
+    .always(function() {
+        myApp.hideIndicator();
+    });
 });
 
 myApp.onPageInit('camp_record', function(page) {
@@ -1058,11 +1075,11 @@ myApp.onPageInit('entries', function(page) {
         if($("#end_camp_time").val() == ""){
            $("#time_error_tech").html("Please Select Time");
             return false; 
-        }else if (image.length == 0) {
-            $("#time_error_tech").html("Please Upload image");
-            return false;
+        // }else if (image.length == 0) {
+        //     $("#time_error_tech").html("Please Upload image");
+        //     return false;
         }
-
+        myApp.showIndicator();
         $.ajax({
             url: base_url + '/patients_record_submit',
             type: 'POST',
@@ -1093,13 +1110,16 @@ myApp.onPageInit('entries', function(page) {
             myApp.alert('Some error occurred on connecting.');
             console.log('fail: ' + j2s(err));
         })
-        .always(function() {});
+        .always(function() {
+            myApp.hideIndicator();
+        });
     });
 });
 
 myApp.onPageInit('leader_board_screen', function(page) {
     // console.log("Screenload");
     myApp.allowPanelOpen = true;
+    myApp.showIndicator();
     $.ajax({
             url: base_url + '/leaderboard',
             type: 'POST',
@@ -1156,7 +1176,9 @@ myApp.onPageInit('leader_board_screen', function(page) {
             myApp.alert('Some error occurred on connecting.');
             // console.log('fail: ' + j2s(err));
         })
-        .always(function() {});
+        .always(function() {
+            myApp.hideIndicator();
+        });
 });
 
 myApp.onPageInit('camp_details', function(page) {

@@ -108,7 +108,8 @@ function machine_booking_form(){
     if (!$('input[name = machine_name]:checked').val() ) {     
         myApp.alert('select machine');     
     } else {
-        machine_name_global = $("input[name='machine_name']:checked").val(); 
+        machine_name_global = $("input[name='machine_name']:checked").val();
+        myApp.showIndicator();
         $.ajax({
             url: base_url + '/load_form_data',
             type: 'POST',
@@ -135,7 +136,9 @@ function machine_booking_form(){
             myApp.alert('Some error occurred on connecting.');
             // console.log('fail: ' + j2s(err));
         })
-        .always(function() {});
+        .always(function() {
+            myApp.hideIndicator();
+        });
     }
 }
 
@@ -144,6 +147,7 @@ function forgatpassword(){
         myApp.prompt('Enter Your Email Id', 'Forgat Password ?', function (value) {
             // myApp.alert('Your name is "' + value + '". You clicked Ok button');
             if ( !value == '') {
+                myApp.showIndicator();
                 $.ajax({
                     url: base_url + '/forgot_password',
                     type: 'POST',
@@ -166,7 +170,9 @@ function forgatpassword(){
                     myApp.alert('Some error occurred on connecting.');
                     // console.log('fail: ' + j2s(err));
                 })
-                .always(function() {});
+                .always(function() {
+                    myApp.hideIndicator();
+                });
             } else {
                  myApp.alert('Enter the registered Email id');
             }
@@ -224,6 +230,7 @@ function submit_machine_booking(){
     }
 
     if (clinic_camp == 'camp') {
+        myApp.showIndicator();
         $.ajax({
             url: base_url + '/camp_clinic_form_submit',
             type: 'POST',
@@ -266,10 +273,13 @@ function submit_machine_booking(){
             myApp.alert('Some error occurred on connecting.');
             // console.log('fail: ' + j2s(err));
         })
-        .always(function() {});
+        .always(function() {
+            myApp.hideIndicator();
+        });
     } else {
         // var date_clinic_set = $("#date-clinic-set").val();
         // console.log("clinic_more_date"+clinic_more_date);
+        myApp.showIndicator();
         $.ajax({
             url: base_url + '/camp_clinic_form_submit',
             type: 'POST',
@@ -314,7 +324,9 @@ function submit_machine_booking(){
             myApp.alert('Some error occurred on connecting.');
             // console.log('fail: ' + j2s(err));
         })
-        .always(function() {});
+        .always(function() {
+            myApp.hideIndicator();
+        });
     }
 }
 
@@ -327,6 +339,7 @@ function camp_approved_click(id){
             // console.log('removed'+'#row_'+id);
         })
         // return false;
+        myApp.showIndicator();
         $.ajax({
             url: base_url + '/approve_camp',
             type: 'POST',
@@ -349,7 +362,9 @@ function camp_approved_click(id){
             myApp.alert('Some error occurred on connecting.');
             // console.log('fail: ' + j2s(err));
         })
-        .always(function() {});
+        .always(function() {
+            myApp.hideIndicator();
+        });
     } 
 }
 
@@ -361,6 +376,7 @@ function camp_delete_click(id){
             $('#row_'+id).remove();
             // console.log('removed'+'#row_'+id);
         })
+        myApp.showIndicator();
         $.ajax({
             url: base_url + '/delete_camp',
             type: 'POST',
@@ -382,7 +398,9 @@ function camp_delete_click(id){
             myApp.alert('Some error occurred on connecting.');
             // console.log('fail: ' + j2s(err));
         })
-        .always(function() {});
+        .always(function() {
+            myApp.hideIndicator();
+        });
     } 
 }
 
@@ -644,6 +662,7 @@ function getEndTime(){
 }
 
 function addDatesClinic(){
+    myApp.showIndicator();
     $.ajax({
         url: base_url + '/validate_camp_clinic',
         type: 'POST',
@@ -691,7 +710,9 @@ function addDatesClinic(){
         myApp.alert('Some error occurred on connecting.');
         // console.log('fail: ' + j2s(err));
     })
-    .always(function() {});
+    .always(function() {
+        myApp.hideIndicator();
+    });
 }
 
 function tConvert(time) {
