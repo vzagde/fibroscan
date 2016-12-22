@@ -1184,7 +1184,7 @@ myApp.onPageInit('leader_board_screen', function(page) {
 myApp.onPageInit('camp_details', function(page) {
     myApp.allowPanelOpen = true;
     var camp_details_data = page.query.camp_details_data;
-     $("#camp_details_image").empty();
+    $("#camp_details_image").empty();
     var html = '';
     $("#camp_details_name").text(camp_details_data.doctor_name);
     $("#camp_details_associat_name").text(camp_details_data.fam_name);
@@ -1196,13 +1196,21 @@ myApp.onPageInit('camp_details', function(page) {
     $("#camp_details_planned_reg ").text(camp_details_data.total_patients);
     $("#male_patient_count_detail ").text(camp_details_data.male_percentage+"%");
      $.each(camp_details_data.camp_images, function(index, val) {
-            console.log(index+" : "+val.image);
-        html +=
-             '<div  class="image_container_details">'+
-                '<img style="width: 90%" src="'+image_url+val.image+'"" alt="">'+
-            '</div>';
+        $("#camp_details_images_txt").empty();
+        if (index == 0 && !val.image) {
+            $("#camp_details_images_txt").empty();
+        } else {
+            $("#camp_details_images_txt").text('Images');
+        }
+        // console.log("Images "+index+" : "+val.image);
+        if (val.image) {
+            html +=
+                 '<div  class="image_container_details">'+
+                    '<img style="width: 90%" src="'+image_url+val.image+'"" alt="">'+
+                '</div>';
+        }
         });
-     $("#camp_details_image").append(html);
+        $("#camp_details_image").append(html);
 
     console.log("camp_details_data"+camp_details_data);
 });
