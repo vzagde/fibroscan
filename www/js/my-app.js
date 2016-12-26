@@ -44,6 +44,7 @@ if(token != undefined){
         $(".camp_book_form").hide();
         $(".camp_approved").hide();
         $(".leader_board_screen").hide();
+        $(".dashboard").hide();
         $("#index-display").show();
         $("#preloader").fadeOut();
         mainView.router.load({
@@ -53,10 +54,12 @@ if(token != undefined){
     } else {
         if (token.group_name == "FAM") {
             $(".leader_board_screen").show();
-             $(".camp_approved").show();
+            $(".camp_approved").show();
+            $(".dashboard").show();
         } else {
             $(".leader_board_screen").hide();
-             $(".camp_approved").hide();
+            $(".camp_approved").hide();
+            $(".dashboard").hide();
         }
         $(".menu_camps_display").show();
         $(".camp_book_form").show();
@@ -660,12 +663,16 @@ myApp.onPageInit('calendar', function(page) {
                     myApp.hideIndicator();
                     var events = data.data;
                     // console.log('done: ' + j2s(data));
+                    // console.log(token);
                     // loop json & append to dom
                     $("#no_patients").text(data.dashboard_data.num_of_patients_per_camps);
                     $("#no_patients_high_risk").text(data.dashboard_data.high_risk);
                     $("#planned_camp").text(data.dashboard_data.num_of_proposed_camps);
                     $("#executed").text(data.dashboard_data.num_of_completed_camps);
                     $("#percentage_camps_executed").text(data.dashboard_data.machine_utilization);
+                    if (token.group_name == "FAM") {
+                        $("#camp_comp").text('Machine utilization');
+                    }
 
                     if (data.status == 'GOTDATA') {
                         $("#no_patients").text(data.dashboard_data.num_of_patients_per_camps);
@@ -930,36 +937,41 @@ myApp.onPageInit('camp_approved', function(page) {
         $("#camp_approved_list").empty();
         if (res.status == 'SUCCESS') {
             var html = '';
-            $.each( res.pending_approvals, function( key, value ) {
-                // // console.log(value);
-                html += 
-                    '<div class="row" style="background-color: #F3F3F3;" id="row_'+value.id+'">'+
-                        '<div class="row" style="width: 100%">'+
-                            '<div class="col-80">'+
-                            '<p style="margin: 20px 0px 0px 8px!important;">'+value.fam_name+','+value.machine_name+'</p>'+
+            if (res.pending_approvals) {
+                $.each( res.pending_approvals, function( key, value ) {
+                    // // console.log(value);
+                    html += 
+                        '<div class="row" style="background-color: #F3F3F3;" id="row_'+value.id+'">'+
+                            '<div class="row" style="width: 100%">'+
+                                '<div class="col-80">'+
+                                '<p style="margin: 20px 0px 0px 8px!important;">'+value.fam_name+','+value.machine_name+'</p>'+
+                                '</div>'+
+                                '<div class="col-20" id="approved_section_'+value.id+'">'+
+                                  '<a onclick="camp_approved_click('+value.id+')"><img style="width: 46%;margin-top: 22px;float: right; padding-right: 9%;" src="img/tick_mark.png" alt=""></a>'+
+                                '</div>'+
                             '</div>'+
-                            '<div class="col-20" id="approved_section_'+value.id+'">'+
-                              '<a onclick="camp_approved_click('+value.id+')"><img style="width: 46%;margin-top: 22px;float: right; padding-right: 9%;" src="img/tick_mark.png" alt=""></a>'+
+                            '<div class="col-100">'+
+                              '<p style="margin:0px 0px 0px 8px!important;">'+date_to_date_string1(value.date)+' '+tConvert(value.start_time)+'-'+tConvert(value.end_time)+'</p>'+
+                            '</div>'+
+                            '<div class="row" style="width: 100%;">'+
+                                '<div class="col-80">'+
+                                  '<p style="margin:0px 0px 0px 8px!important;">'+value.doctor_name+'</p>'+
+                                '</div>'+
+                                '<div class="col-20" id="delete_section_'+value.id+'">'+
+                                  '<a onclick="camp_delete_click('+value.id+')" ><i class="fa fa-trash-o" style="color:red;float: right; padding-right:21%;font-size:22px;" aria-hidden="true" data-id="'+value.id+'"></i></a>'+
+                                '</div>'+
+                            '</div>'+
+                            '<div class="col-100">'+
+                              '<p style="margin:0px 0px 20px 8px!important;">'+value.address+'</p>'+
                             '</div>'+
                         '</div>'+
-                        '<div class="col-100">'+
-                          '<p style="margin:0px 0px 0px 8px!important;">'+date_to_date_string1(value.date)+' '+tConvert(value.start_time)+'-'+tConvert(value.end_time)+'</p>'+
-                        '</div>'+
-                        '<div class="row" style="width: 100%;">'+
-                            '<div class="col-80">'+
-                              '<p style="margin:0px 0px 0px 8px!important;">'+value.doctor_name+'</p>'+
-                            '</div>'+
-                            '<div class="col-20" id="delete_section_'+value.id+'">'+
-                              '<a onclick="camp_delete_click('+value.id+')" ><i class="fa fa-trash-o" style="color:red;float: right; padding-right:21%;font-size:22px;" aria-hidden="true" data-id="'+value.id+'"></i></a>'+
-                            '</div>'+
-                        '</div>'+
-                        '<div class="col-100">'+
-                          '<p style="margin:0px 0px 20px 8px!important;">'+value.address+'</p>'+
-                        '</div>'+
-                    '</div>'+
-                    '<hr style="margin: 0%">';
-            })
-            $("#camp_approved_list").append(html);
+                        '<hr style="margin: 0%">';
+                })
+                $("#camp_approved_list").append(html);
+            } else {
+                html += '<h2 style="text-align: center; padding: 2%; line-height: 30px;">There are no camps pending for Approval</h2>';
+                $("#camp_approved_list").append(html);
+            }
         }
 
     })
@@ -1130,10 +1142,12 @@ myApp.onPageInit('leader_board_screen', function(page) {
         })
         .done(function(res) {
             // console.log('done: ' + j2s(res));
-            $("#leader_board_data").empty();
+            $("#all, #single, #two").empty();
             if (res.status == 'SUCCESS') {
                 var html = '';
-                for (var i = 0; i < 10; i++) {
+                var html1 = '';
+                var html2 = '';
+                for (var i = 0; i < res.leaderboard_data.length; i++) {
                     html += '<div class="row" style="background-color: #F3F3F3">'+
                                 '<div class="row leader_board" style="padding: 3% 5%;">'+
                                     '<div class="col-100">'+
@@ -1167,7 +1181,86 @@ myApp.onPageInit('leader_board_screen', function(page) {
                             '</div>'+
                             '<hr style="margin: 0%">';
                 }
-                $("#leader_board_data").html(html);
+
+                for (var i = 0; i < res.leaderboard_data.length; i++) {
+                    if (res.leaderboard_data[i]['num_of_machine'] == 1) {
+                        html1 += '<div class="row" style="background-color: #F3F3F3">'+
+                                    '<div class="row leader_board" style="padding: 3% 5%;">'+
+                                        '<div class="col-100">'+
+                                            '<p style="font-weight: bold;font-size:20px;color:#000;">'+res.leaderboard_data[i]['fam_name']+'</p>'+
+                                        '</div>'+
+                                        '<div class="col-80">'+
+                                            '<p class="leader_txt">No.of proposed camps</p>'+
+                                        '</div>'+
+                                        '<div class="col-20">'+
+                                            '<p class="leader_no"  style="color:#D07268;">'+res.leaderboard_data[i]['num_of_proposed_camps']+'</p>'+
+                                        '</div>'+
+                                        '<div class="col-80">'+
+                                            '<p class="leader_txt">No.of compeleted camps</p>'+
+                                        '</div>'+
+                                        '<div class="col-20">'+
+                                            '<p class="leader_no"  style="color:#402943;">'+res.leaderboard_data[i]['num_of_completed_camps']+'</p>'+
+                                        '</div>'+
+                                        '<div class="col-80">'+
+                                            '<p class="leader_txt">Average no. of patients/camps</p>'+
+                                        '</div>'+
+                                        '<div class="col-20">'+
+                                            '<p class="leader_no"  style="color:#DBB555">'+res.leaderboard_data[i]['num_of_patients_per_camps']+'</p>'+
+                                        '</div>'+
+                                        '<div class="col-80">'+
+                                            '<p class="leader_txt">High Risk</p>'+
+                                        '</div>'+
+                                        '<div class="col-20">'+
+                                            '<p class="leader_no"  style="color:#A7C8BD" >'+res.leaderboard_data[i]['high_risk']+'</p>'+
+                                        '</div>'+
+                                    '</div>'+
+                                '</div>'+
+                                '<hr style="margin: 0%">';
+                    } else if (res.leaderboard_data[i]['num_of_machine'] == 2) {
+                        html2 += '<div class="row" style="background-color: #F3F3F3">'+
+                                    '<div class="row leader_board" style="padding: 3% 5%;">'+
+                                        '<div class="col-100">'+
+                                            '<p style="font-weight: bold;font-size:20px;color:#000;">'+res.leaderboard_data[i]['fam_name']+'</p>'+
+                                        '</div>'+
+                                        '<div class="col-80">'+
+                                            '<p class="leader_txt">No.of proposed camps</p>'+
+                                        '</div>'+
+                                        '<div class="col-20">'+
+                                            '<p class="leader_no"  style="color:#D07268;">'+res.leaderboard_data[i]['num_of_proposed_camps']+'</p>'+
+                                        '</div>'+
+                                        '<div class="col-80">'+
+                                            '<p class="leader_txt">No.of compeleted camps</p>'+
+                                        '</div>'+
+                                        '<div class="col-20">'+
+                                            '<p class="leader_no"  style="color:#402943;">'+res.leaderboard_data[i]['num_of_completed_camps']+'</p>'+
+                                        '</div>'+
+                                        '<div class="col-80">'+
+                                            '<p class="leader_txt">Average no. of patients/camps</p>'+
+                                        '</div>'+
+                                        '<div class="col-20">'+
+                                            '<p class="leader_no"  style="color:#DBB555">'+res.leaderboard_data[i]['num_of_patients_per_camps']+'</p>'+
+                                        '</div>'+
+                                        '<div class="col-80">'+
+                                            '<p class="leader_txt">High Risk</p>'+
+                                        '</div>'+
+                                        '<div class="col-20">'+
+                                            '<p class="leader_no"  style="color:#A7C8BD" >'+res.leaderboard_data[i]['high_risk']+'</p>'+
+                                        '</div>'+
+                                    '</div>'+
+                                '</div>'+
+                                '<hr style="margin: 0%">';
+                    }
+                }
+
+                $("#all").html(html);
+                $("#single").html(html1);
+                $("#two").html(html2);
+
+                // $(".leader_board_tab").click(function(){
+                //     $(".list_type").hide();
+                //     var leader_show_id = '.'+$(this).data('id');
+                //     $(leader_show_id).show();
+                // })
             }
 
         })

@@ -3220,7 +3220,7 @@ html:not(.watch-active-state) .button:active {
     border-radius: 27px
 }
 .button.active {
-    background: #007aff;
+    background: #4f4f4f;
     color: #fff
 }
 .button.button-big {

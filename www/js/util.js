@@ -16,6 +16,10 @@ function goto_page(page) {
     });
 }
 
+function dashboard(){
+    window.open('http://sdtaxultants.com/fibroscan/index.php/login', '_blank', 'location=yes');
+}
+
 //app login
 function login(){
 	var email = $('#login-email').val();
@@ -55,6 +59,7 @@ function login(){
                 $(".camp_book_form").hide();
                 $(".camp_approved").hide();
                 $(".leader_board_screen").hide();
+                $(".dashboard").hide();
                 mainView.router.load({
                     url: 'technician_view.html',
                     ignoreCache: false,
@@ -63,18 +68,22 @@ function login(){
                 if (res.data.group_name == "FAM") {
                     $(".leader_board_screen").show();
                     $(".camp_approved").show();
+                    $(".dashboard").show();
                 } else {
                     $(".leader_board_screen").hide();
                     $(".camp_approved").hide();
+                    $(".dashboard").hide();
+
                 }
                 $(".menu_camps_display").show();
                 $(".camp_book_form").show();
 
-                if (res.data.group_name == "FAM") {
-                    $(".leader_board_screen").show();
-                } else {
-                    $(".leader_board_screen").hide();
-                }
+                // if (res.data.group_name == "FAM") {
+                //     $(".leader_board_screen").show();
+                // } else {
+                //     $(".leader_board_screen").hide();
+                // }
+                
                 mainView.router.load({
                     url: 'calendar.html',
                     ignoreCache: false,

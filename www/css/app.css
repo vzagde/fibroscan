@@ -1116,4 +1116,14 @@ and (orientation : portrait) {
 .pac-logo:after{
   display: none;
 }
+
+.button.active {
+    background: #4f4f4f !important;
+    color: #fff
+}
+
+.button{
+   border-top: 1px solid #4f4f4f !important;
+   border-bottom: 1px solid #4f4f4f !important;
+}
 /*end css for camp_details*
