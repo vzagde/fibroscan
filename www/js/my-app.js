@@ -172,7 +172,7 @@ myApp.onPageInit('machine_list', function(page) {
                         '</div>'+
                         '<div class="col-60 ">'+
                             '<p style="border: 2px solid #05c10b;;height:25px;width:26px;-webkit-border-radius:75px;-moz-border-radius:75px;float: right;margin-right: 6%;">'+
-                            '<input style="float: right;margin: 11%; margin-right: 10%;" type="radio" name="machine_name" '+make_disable+' value="'+machineNAME[i].machine_name+'"></p>'+
+                            '<input style="float: right;margin: 11%; margin-right: 13%;" type="radio" name="machine_name" '+make_disable+' value="'+machineNAME[i].machine_name+'"></p>'+
                         '</div>'+
                     '</div>';
         if (machine_prev_details[i].date) {
@@ -662,9 +662,7 @@ myApp.onPageInit('calendar', function(page) {
                 .done(function(data) {
                     myApp.hideIndicator();
                     var events = data.data;
-                    // console.log('done: ' + j2s(data));
-                    // console.log(token);
-                    // loop json & append to dom
+                    console.log('done: ' + j2s(data));
                     $("#no_patients").text(data.dashboard_data.num_of_patients_per_camps);
                     $("#no_patients_high_risk").text(data.dashboard_data.high_risk);
                     $("#planned_camp").text(data.dashboard_data.num_of_proposed_camps);
@@ -680,7 +678,6 @@ myApp.onPageInit('calendar', function(page) {
                         $("#planned_camp").text(data.dashboard_data.num_of_proposed_camps);
                         $("#executed").text(data.dashboard_data.num_of_completed_camps);
                         $("#percentage_camps_executed").text(data.dashboard_data.machine_utilization);
-
                         for (var i = 0; i < events.length; i++) {
                             var af_color = events[i].first_color;
                             var bf_color = events[i].second_color;
@@ -688,6 +685,9 @@ myApp.onPageInit('calendar', function(page) {
                             var eventDay = str.split('-')[2];
                             var eventMonth = str.split('-')[1];
                             var classNames = '';
+
+                            console.log(af_color);
+                            console.log(bf_color);
 
                             if (af_color == 'green') {
                                 classNames += ' afgreen';
@@ -701,14 +701,14 @@ myApp.onPageInit('calendar', function(page) {
                                 classNames += ' bfred';
                             }
 
-                            $('tbody.event-calendar tr td[date-month="'+eventMonth+'"][date-day="'+eventDay+'"]').removeClass('afgreen bfgreen afred bfred');
-                            $('tbody.event-calendar tr td[date-month="'+eventMonth+'"][date-day="'+eventDay+'"]').addClass(classNames);
+                            $('tbody.event-calendar tr td[date-month="'+Number(eventMonth)+'"][date-day="'+Number(eventDay)+'"]').removeClass('afgreen bfgreen afred bfred');
+                            $('tbody.event-calendar tr td[date-month="'+Number(eventMonth)+'"][date-day="'+Number(eventDay)+'"]').addClass(classNames);
                         }
                     }
 
                 })
                 .fail(function(data) {
-                    // console.log(data);
+                    console.log(data);
                 });
                 eventClass = 'event1 event';
                 $('tbody.event-calendar tr td').addClass(eventClass);
@@ -876,7 +876,7 @@ myApp.onPageInit('camp_list', function(page) {
                           '<div class="item-title" style="min-width: 100% !important; white-space: normal;">'+
                             '<p style="margin: 1px"><b>'+name[0]+date_to_date_string2(value.date)+value.id+'</b></p>'+
                             '<p id="click_delete_'+value.id+'" style="margin: 0px !important; float: right">'+
-                                '<a onclick="delete_executed_camp('+value.id+')"><i class="fa fa-trash-o" style="color:red;margin-top: 25px !important;font-size: 21px !important;" aria-hidden="true"></i><a/>'+
+                                '<a onclick="delete_executed_camp('+value.id+')"><i class="fa fa-trash-o" style="color:red;margin-top: 22px !important;font-size: 30px !important;" aria-hidden="true"></i><a/>'+
                             '</p>'+
                             '<p style="margin: 1px">'+tConvert(value.start_time)+'-'+tConvert(value.end_time)+'</p>'+
                             '<p style="margin: 1px">'+date_to_date_string2(value.date)+'</p>'+
@@ -947,7 +947,7 @@ myApp.onPageInit('camp_approved', function(page) {
                                 '<p style="margin: 20px 0px 0px 8px!important;">'+value.fam_name+','+value.machine_name+'</p>'+
                                 '</div>'+
                                 '<div class="col-20" id="approved_section_'+value.id+'">'+
-                                  '<a onclick="camp_approved_click('+value.id+')"><img style="width: 46%;margin-top: 22px;float: right; padding-right: 9%;" src="img/tick_mark.png" alt=""></a>'+
+                                  '<a onclick="camp_approved_click('+value.id+')"><img style="width: 55%;margin-top: 22px;float: right; padding-right: 9%;" src="img/tick_mark.png" alt=""></a>'+
                                 '</div>'+
                             '</div>'+
                             '<div class="col-100">'+
@@ -958,7 +958,7 @@ myApp.onPageInit('camp_approved', function(page) {
                                   '<p style="margin:0px 0px 0px 8px!important;">'+value.doctor_name+'</p>'+
                                 '</div>'+
                                 '<div class="col-20" id="delete_section_'+value.id+'">'+
-                                  '<a onclick="camp_delete_click('+value.id+')" ><i class="fa fa-trash-o" style="color:red;float: right; padding-right:21%;font-size:22px;" aria-hidden="true" data-id="'+value.id+'"></i></a>'+
+                                  '<a onclick="camp_delete_click('+value.id+')" ><i class="fa fa-trash-o" style="color:red;float: right; padding-right:21%;font-size:30px;" aria-hidden="true" data-id="'+value.id+'"></i></a>'+
                                 '</div>'+
                             '</div>'+
                             '<div class="col-100">'+
