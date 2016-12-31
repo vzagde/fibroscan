@@ -171,8 +171,8 @@ myApp.onPageInit('machine_list', function(page) {
                             '<h1 class="wpa" id="machineName">'+machineNAME[i].machine_name+'</h1>'+
                         '</div>'+
                         '<div class="col-60 ">'+
-                            '<p style="border: 2px solid #05c10b;;height:25px;width:26px;-webkit-border-radius:75px;-moz-border-radius:75px;float: right;margin-right: 6%;">'+
-                            '<input style="float: right;margin: 11%; margin-right: 13%;" type="radio" name="machine_name" '+make_disable+' value="'+machineNAME[i].machine_name+'"></p>'+
+                            '<p style="border: 2px solid #05c10b;;height:35px;width:35px;-webkit-border-radius:75px;-moz-border-radius:75px;float: right;margin-right: 6%;">'+
+                            '<input style="float: right; width: 30px; height: 30px" type="radio" name="machine_name" '+make_disable+' value="'+machineNAME[i].machine_name+'"></p>'+
                         '</div>'+
                     '</div>';
         if (machine_prev_details[i].date) {
@@ -263,6 +263,14 @@ myApp.onPageInit('machine_booking', function(page) {
     $(".pac-container").hide();
     $(".pac-container").remove();
     initialize();
+
+    $("#vz_available_at_camp_id").click(function(){
+        $("#available_at_camp").click();
+    })
+
+    $("#vz_block_machine_id").click(function(){
+        $("#block_machine").click();
+    })
 
     var doctors_data = page.query.doctors_data;
     var html = '<option value="0">Select Doctor</option>';

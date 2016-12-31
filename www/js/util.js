@@ -909,6 +909,6 @@ function getlocationFromMap(){
     $(".pac-container").show();
 }
 
-
-
-
+function vz_block_machine() {
+    $("#available_at_camp").click();
+}
