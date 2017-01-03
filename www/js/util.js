@@ -629,7 +629,7 @@ function onDeviceReady() {
         myApp.hideIndicator();
          myApp.closePanel();
         image_from_device = '';
-        if (page.name == "calendar" || page.name == "technician_view" || page.name == "index") {
+        if (page.name == "calendar" || page.name == "technician_view" || page.name == "index" ) {
             lockFile = dataDir.getFile("file:///lockfile.txt", {create: true, exclusive: true});
             // console.log("Created File"+lockFile);
             myApp.confirm('would you like to exit app.', function() {
@@ -637,6 +637,8 @@ function onDeviceReady() {
                 gaPlugin.exit(nativePluginResultHandler, nativePluginErrorHandler);
                 navigator.app.exitApp();
             });
+        } else if (page.name == "machine_list") {
+            goto_page('index');
         } else {
             // console.log('else');
             mainView.router.back({});

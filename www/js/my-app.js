@@ -358,13 +358,13 @@ myApp.onPageInit('technician_view', function(page) {
     })
     .done(function(res) {
         $("#techni").empty();
-        $("#tech_dashboard_num_camps").html(res.dashboard_data.num_of_camps);
-        $("#tech_dashboard_num_patients").html(res.dashboard_data.num_of_patients);
-        $("#tech_dashboard_camps_record").html(res.dashboard_data.completed_reports);
-        $("#tech_dashboard_camp_pending").html(res.dashboard_data.num_of_camps_to_be_executed);
+        var html = '';
         if (res.status == 'SUCCESS') {
+            $("#tech_dashboard_num_camps").html(res.dashboard_data.num_of_camps);
+            $("#tech_dashboard_num_patients").html(res.dashboard_data.num_of_patients);
+            $("#tech_dashboard_camps_record").html(res.dashboard_data.completed_reports);
+            $("#tech_dashboard_camp_pending").html(res.dashboard_data.num_of_camps_to_be_executed);
             $.each( res.data, function( key, value ) {
-                var html = '';
                 if (value.status == 'Start') {
                     html += '<div class="camp_Id">'+
                                 '<h3><b>Camp Id :</b>'+value.id+'</h3>'+
@@ -472,6 +472,15 @@ myApp.onPageInit('technician_view', function(page) {
                 //     }
                 // }
             })
+        } else if (res.status == 'failed') {
+            myApp.hideIndicator();
+            $("#techni").empty();
+            $("#tech_dashboard_num_camps").html(0);
+            $("#tech_dashboard_num_patients").html(0);
+            $("#tech_dashboard_camps_record").html(0);
+            $("#tech_dashboard_camp_pending").html(0);
+            $("#techni").append(res.message);
+            $("#techni").css({"text-align-last": "center", "margin-top": "25%"});
         }
 
     })
