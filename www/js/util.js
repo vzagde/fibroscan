@@ -383,7 +383,6 @@ function camp_delete_click(id){
         var row_delet = '#delete_section_'+id;
         $(row_delet).click(function(){
             $('#row_'+id).remove();
-            // console.log('removed'+'#row_'+id);
         })
         myApp.showIndicator();
         $.ajax({
@@ -395,17 +394,23 @@ function camp_delete_click(id){
             },
         })
         .done(function(res) {
-            // console.log('done: ' + j2s(res));
             if (res.status == 'SUCCESS') {
+                delete_camp_status -= 1;
+                console.log("Delete camp status"+delete_camp_status);
                 myApp.alert(res.message);
+                if (delete_camp_status == 0) {
+                    mainView.router.load({
+                        url: 'calendar.html',
+                        ignoreCache: false,
+                     });
+                }
             }else{
-                myApp.alert(res.message);  
+                myApp.alert(res.message);
             } 
         })
         .fail(function(err) {
             myApp.hideIndicator();
             myApp.alert('Some error occurred on connecting.');
-            // console.log('fail: ' + j2s(err));
         })
         .always(function() {
             myApp.hideIndicator();

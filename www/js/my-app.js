@@ -679,7 +679,7 @@ myApp.onPageInit('calendar', function(page) {
                     if (token.group_name == "FAM") {
                         $("#camp_comp").text('Machine utilization');
                     }
-
+                    console.log(data.dashboard_data.machine_utilization);
                     if (data.status == 'GOTDATA') {
                         $("#no_patients").text(data.dashboard_data.num_of_patients_per_camps);
                         $("#no_patients_high_risk").text(data.dashboard_data.high_risk);
@@ -947,7 +947,7 @@ myApp.onPageInit('camp_approved', function(page) {
             var html = '';
             if (res.pending_approvals) {
                 $.each( res.pending_approvals, function( key, value ) {
-                    // // console.log(value);
+                    delete_camp_status += 1;
                     html += 
                         '<div class="row" style="background-color: #F3F3F3;" id="row_'+value.id+'">'+
                             '<div class="row" style="width: 100%">'+
@@ -977,6 +977,7 @@ myApp.onPageInit('camp_approved', function(page) {
                 })
                 $("#camp_approved_list").append(html);
             } else {
+                delete_camp_status = 0;
                 html += '<h2 style="text-align: center; padding: 2%; line-height: 30px;">There are no camps pending for Approval</h2>';
                 $("#camp_approved_list").append(html);
             }
