@@ -13,7 +13,7 @@ var technician_start_time_camp = '';
 var myApp = new Framework7({
     // swipePanel: 'right',
     swipeBackPage:false,
-    preloadPreviousPage: false,
+    // preloadPreviousPage: false,
     uniqueHistory: true,
     uniqueHistoryIgnoreGetParameters: true,
     modalTitle: 'Fibro Scan',

@@ -637,8 +637,6 @@ function onDeviceReady() {
                 gaPlugin.exit(nativePluginResultHandler, nativePluginErrorHandler);
                 navigator.app.exitApp();
             });
-        } else if (page.name == "machine_list") {
-            goto_page('index');
         } else {
             // console.log('else');
             mainView.router.back({});
