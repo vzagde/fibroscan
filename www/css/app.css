@@ -1127,7 +1127,4 @@ and (orientation : portrait) {
    border-bottom: 1px solid #4f4f4f !important;
 }
 
-.open-panel{
-  z-index: 9999999 !important;
-}
 /*end css for camp_details*
