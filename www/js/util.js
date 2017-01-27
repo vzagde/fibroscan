@@ -638,9 +638,7 @@ function onDeviceReady() {
                 navigator.app.exitApp();
             });
         } else {
-            // console.log('else');
             mainView.router.back({});
-            // navigator.app.backHistory();
         }
     }, false);
 }
