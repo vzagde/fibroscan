@@ -630,13 +630,15 @@ function onDeviceReady() {
          myApp.closePanel();
         image_from_device = '';
         if (page.name == "calendar" || page.name == "technician_view" || page.name == "index" ) {
-            lockFile = dataDir.getFile("file:///lockfile.txt", {create: true, exclusive: true});
+            // lockFile = dataDir.getFile("file:///lockfile.txt", {create: true, exclusive: true});
             // console.log("Created File"+lockFile);
             myApp.confirm('would you like to exit app.', function() {
                 navigator.app.clearHistory();
                 gaPlugin.exit(nativePluginResultHandler, nativePluginErrorHandler);
                 navigator.app.exitApp();
             });
+        } else if (page.name == "machine_booking") {
+            load_machine_listing_details(vz_dayevent, vz_monthevent, vz_yearevent, token);
         } else {
             mainView.router.back({});
         }

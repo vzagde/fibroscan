@@ -9,11 +9,15 @@ var current_date = '';
 var clinic_more_date = new Array();
 var records = new Array();
 var technician_start_time_camp = '';
+var vz_dayevent = '';
+var vz_monthevent = '';
+var vz_yearevent = '';
 
 var myApp = new Framework7({
+    pushState: true,
     // swipePanel: 'right',
     swipeBackPage:false,
-    // preloadPreviousPage: false,
+    preloadPreviousPage: false,
     uniqueHistory: true,
     uniqueHistoryIgnoreGetParameters: true,
     modalTitle: 'Fibro Scan',
@@ -811,49 +815,11 @@ myApp.onPageInit('calendar', function(page) {
                         // console.log("hi");
                         myApp.alert("You can not select this date for camp / clinic booking.");
                     }else{
-                        // console.log(token);
-                        // console.log(dayEvent);
-                        // console.log(monthEvent);
-                        // console.log(yearEvent);
                         myApp.showIndicator();
-                        $.ajax({
-                            url: base_url + '/machine_listing',
-                            type: 'POST',
-                            crossDomain: true,
-                            data: {
-                                "user_data" : token,
-                                "day" : dayEvent,
-                                "month" : monthEvent,
-                                "year" : yearEvent,
-                            },
-                        })
-                        .done(function(res) {
-                            // console.log(j2s(res));
-                            if (res.status == 'SUCCESS') {
-                                selected_date =  yearEvent+"-"+monthEvent+"-"+dayEvent;
-                                mainView.router.load({
-                                    url: 'machine_list.html',
-                                    ignoreCache: false,
-                                    query: {
-                                        machine_name: res.machine_name,
-                                        contact_number : res.contact_number,
-                                        prev_details : res.prev_details,
-                                        current_details :res.current_details,
-                                        group_name : token.group_name,
-                                        num_records : res.num_machine,
-                                        next_details : res.next_details,
-                                    },
-                                });
-                            }
-                        })
-                        .fail(function(err) {
-                            myApp.hideIndicator();
-                            myApp.alert('Some error occurred on connecting.');
-                            // console.log('fail: ' + j2s(err));
-                        })
-                        .always(function() {
-                            myApp.hideIndicator();
-                        });
+                        vz_dayevent = dayEvent;
+                        vz_monthevent = monthEvent;
+                        vz_yearevent = yearEvent;
+                        load_machine_listing_details(dayEvent, monthEvent, yearEvent, token);
                     }
                 });
             };
@@ -1325,3 +1291,44 @@ myApp.onPageInit('camp_details', function(page) {
 
     console.log("camp_details_data"+camp_details_data);
 });
+
+function load_machine_listing_details(dayEvent, monthEvent, yearEvent, token){
+    $.ajax({
+        url: base_url + '/machine_listing',
+        type: 'POST',
+        crossDomain: true,
+        data: {
+            "user_data" : token,
+            "day" : dayEvent,
+            "month" : monthEvent,
+            "year" : yearEvent,
+        },
+    })
+    .done(function(res) {
+        // console.log(j2s(res));
+        if (res.status == 'SUCCESS') {
+            selected_date =  yearEvent+"-"+monthEvent+"-"+dayEvent;
+            mainView.router.load({
+                url: 'machine_list.html',
+                ignoreCache: false,
+                query: {
+                    machine_name: res.machine_name,
+                    contact_number : res.contact_number,
+                    prev_details : res.prev_details,
+                    current_details :res.current_details,
+                    group_name : token.group_name,
+                    num_records : res.num_machine,
+                    next_details : res.next_details,
+                },
+            });
+        }
+    })
+    .fail(function(err) {
+        myApp.hideIndicator();
+        myApp.alert('Some error occurred on connecting.');
+        // console.log('fail: ' + j2s(err));
+    })
+    .always(function() {
+        myApp.hideIndicator();
+    });
+}
